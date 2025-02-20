@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steam Popup Dialog Redesign</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-text">
+            <h1 style="color: white; font-size: 70px">STEAM<br>ACCESSIBLE<br>COMPONENT<br>REDESIGN</h1>
+            <p style="font-size: 20px; padding-right: 50px;"><i>A case study in redesigning Steam's keyboard navigation for a seamless user experience.</i></p>
+        </div>
+        <div class="header-image">
+            <img src="assets/images/header_image.png" style="padding: 0px">
+        </div>
+    </div>
+
+    
+    <div class="container">
+    <div id="sidebar">
+        <h3><a href="#">Steam Accessible Component Redesign</a></h3>
+        <hr>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#prototype">Final Prototype</a></li>
+            <li><a href="#reflection">Reflection</a></li>
+
+
+        </ul>
+    </div>
+    <div id="content">
+        <section id="overview" style="padding-top: 30px">
+            <h1>Overview</h1>
+            <div class="overview-box">
+                <div class="overview-row">
+                    <div class="overview-column">
+                        <p style="font-size: 12; margin-bottom: 0px;"><b>ROLE</b></p>
+                        <p>UX Researcher, UX Designer</p>
+                    </div>
+                    <div class="overview-column">
+                        <p style="font-size: 11; margin-bottom: 0px;"><b>DURATION</b></p>
+                        <p>2 weeks (February 2025)</p>
+                    </div>
+                </div>
+                <div class="overview-row">
+                    <div class="overview-column">
+                        <p style="font-size: 12; margin-bottom: 0px;"><b>CONTEXT</b></p>
+                        <p>Brown CS1300 Project 2</p>
+                    </div>
+                    <div class="overview-column">
+                        <p style="font-size: 12; margin-bottom: 0px;"><b>GOAL</b></p>
+                        <p>Redesign a component for accessibility.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Project Summary</h3>
+            <p>In this project, I redesigned a popup dialogue from Steam, the gaming distributor, 
+                to make it more accessible and efficient for keyboard users. In this, I explored:</p>
+                <ul>
+                    <li>Learnability, memorability, efficiency, accessibility, and tradeoffs between them</li>
+                    <li>How to account for multiple forms of input and output</li>
+                    <li>Using state models for user interactions</li>
+
+                </ul>
+        </section>
+        <hr>
+        <section id="problem">
+            <h1>Problem</h1>
+            <p>
+                <b>Steam</b> is the leading storefront for buying and selling video games. 
+                Its web app features various popup dialogs for actions like confirming purchases, 
+                managing friends, and adjusting settings. However, these dialogs are primarily 
+                designed for mouse interactions, making navigation difficult for users who rely on 
+                keyboards or assistive technologies.
+            </p>
+            <p>
+                In particular, I took notice of a popup dialog that appears when deleting a game from 
+                your library. This component had a distinct lack of <b>focus management</b> and <b>visibility
+                of active elements.</b> 
+            </p>
+            
+            <figure>
+                <img src="assets/images/steam_default.png" style="width:100%; padding-bottom: 10px">
+                <figcaption><i>Popup dialog to remove a free Steam game from library.</i></figcaption>
+            </figure>
+
+            <p>
+                For users who rely on keyboards—including power users, gamers, and individuals with 
+                motor disabilities—these limitations create frustration and hinder usability. 
+                In this project, I aimed to <b>improve keyboard accessibility</b> to enhance Steam’s user 
+                experience across all devices.
+            </p>
+        </section>
+        <hr>
+        <section id="research">
+          <h1>Research</h1>
+          <p>
+            I investigated popup dialogs across three applications, including the one I aimed to redesign.
+            My research began with input analysis <b>to discover the different ways users were allowed to
+            interact with each application's dialog.</b>
+          </p>
+
+          <h3>Example 1: Deleting a free Steam game</h3>
+         
+          <p>Below is a demonstration of how to get the "remove game" popup dialog 
+            in Steam. This is the first application we will be investigating, and the
+            one we will later be redesigning.
+          </p>
+
+          <figure>
+            <img src="assets/images/steam_dropdown.gif" style="width:100%; padding-bottom: 10px">
+            <figcaption><i>Demo: Removing a free Steam game from library</i></figcaption>
+          </figure>
+
+          <p>
+            To get a better grasp of how a user could interact with this component,
+            I took note of how each component changed with user interaction. Click
+            through the carousel below to see the component in different states of 
+            user input.
+          </p>
+
+          <div class="slideshow-container" id="slideshow0">
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/steam_default.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>Default state.</i></figcaption>
+                  </figure>
+            </div>
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/steam_remove_hover.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>"Remove" Hover state: Brightened button.</i></figcaption>
+                  </figure>
+            </div>
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/steam_remove_active.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>"Remove" Active state: Darkened button.</i></figcaption>
+                  </figure>
+            </div>
+            
+        
+            <!-- Left and right arrows -->
+            <a class="prev" onclick="changeSlide(-1, 'slideshow0')">&#10094;</a>
+            <a class="next" onclick="changeSlide(1, 'slideshow0')">&#10095;</a>
+        </div>
+
+        <p>
+          I noted some of the following input &  details for the component as follows:
+        </p>
+        <div class="two-columns">
+          <div class="column">
+            <h4>Input:</h4>
+
+            <ul>
+                <li>✅ Clicking outside dialog box =  "Cancel".</li>
+                <li>✅ TAB through "Remove" and ""Cancel".</li>
+                <li>✅ SPACE/ENTER = mouse click. </li>
+                <li>✅ ESC = "Cancel".</li>
+                <li>⛔ No text interaction.</li>
+                <li>⛔ No CTRL+Z to undo.</li>
+            </ul>
+        </div>  
+        <div class="column">
+            <h4>Output:</h4>
+            <ul>
+                <li>✅ Remove and Cancel styled differently.</li>
+                <li>✅ Changes on hover + active.</li>
+                <li>✅Focus default: Whole component.</li>
+                <li>⛔ No visible changes on TAB.</li>
+                <li>⛔ Screenreader struggles to (re/)read text. Normal commands don't work.</li>
+            </ul>
+        </div>
+
+        </div>
+          
+          <h3>Example 2: Deleting a Spotify playlist</h3>
+
+          <p>To get a better idea of how different applications approach
+            popup dialogs that involve deletion, I next took a look at 
+            Spotify's process for deleting a playlist.
+          </p>
+
+          <figure>
+            <img src="assets/images/spotify_dropdown_4.gif" style="width:100%; padding-bottom: 10px">
+            <figcaption><i>Demo: Deleting a Spotify playlist.</i></figcaption>
+          </figure>
+
+          <p>
+            Similar to before, I observed the different states of the component, some of which are below:
+          </p>
+
+          <div class="slideshow-container" id="slideshow1">
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/spotify_popup_default.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>Default state.</i></figcaption>
+                  </figure>
+            </div>
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/spotify_popup_delete_hover.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>"Delete" Hover state: Larger text & button, brighter button.</i></figcaption>
+                  </figure>
+            </div>
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/spotify_popup_delete_active.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>"Delete" Active state: Normal text & button size, darker button.</i></figcaption>
+                  </figure>
+            </div>
+        
+            <!-- Left and right arrows -->
+            <a class="prev" onclick="changeSlide(-1, 'slideshow1')">&#10094;</a>
+            <a class="next" onclick="changeSlide(1, 'slideshow1')">&#10095;</a>
+        </div>
+
+        <p>Spotify had the clearest and smoothest interactions for 
+            mouse and keyboard in tandem. I enjoyed Spotify's <b>different signifiers
+            for focus and hover states.</b> Again, I noted some of the following details for the component as follows:
+        </p>
+          <div class="two-columns">
+            <div class="column">
+              <h4>Input:</h4>
+  
+              <ul>
+                  <li>✅ Clicking outside dialog box = "Cancel".</li>
+                  <li>✅ TAB through "Cancel" and "Delete".
+                  <li>✅ ESC = "Cancel".</li>
+                  <li>✅ SPACE/ENTER = mouse click.</li>
+                  <li>✅ CTRL+Z undoes deletion.</li>
+                  <li>✅ Mobile app: Uses same simple dialog.</li>
+                  <li>⛔ No text interaction.</li>
+                  <li>⛔ Mobile app: No shake to undo.</li>
+              </ul>
+          </div>  
+          <div class="column">
+              <h4>Output:</h4>
+              <ul>
+                <li>✅ "Cancel" and "Delete" styled w/ different colors.</li>
+                <li>✅ Changes on hover + active.</li>
+                <li>✅ Visible focus default: "Delete".</li>
+                <li>✅ Focus change = border change.</li>
+                <li>✅ Mobile app uses different weight/colored text</li>
+                <li>⛔ Screenreader navigates only w/ TAB.
+              </ul>
+          </div>
+  
+          </div>
+
+          <h3>Example 3: Unenrolling from an EdStem course.</h3>
+
+          <p>Finally, I wanted to investigate how a less-established but still widely-used
+            application approached popup dialogs. For this, I chose EdStem, an online forum
+            for students to enroll in classes and post questions to their TAs and professors.
+          </p>
+
+          <p>I looked at the popup dialog that allows you to unenroll from a course:</p>
+
+          <figure>
+            <img src="assets/images/edstem_dropdown.gif" style="width:100%; padding-bottom: 10px">
+            <figcaption><i>Demo: Unenrolling from an EdStem course</i></figcaption>
+          </figure>
+
+          <p>
+            Again, the different states of component interaction are below:
+          </p>
+
+          <div class="slideshow-container" id="slideshow2">
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/edstem_default.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>Default state.</i></figcaption>
+                  </figure>
+            </div>
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/edstem_confirm.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>"Confirm" toggled state.</i></figcaption>
+                  </figure>
+            </div>
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/edstem_hover.png" style="width:100%; padding-bottom: 10px">
+                    <figcaption><i>"Cancel" hover state: Lightened text.</i></figcaption>
+                  </figure>
+            </div>
+            <div class="mySlides fade">
+                <figure>
+                    <img src="assets/images/edstem_active.png" style="width:100%">
+                    <figcaption>"Cancel" active state: Lightest text, background color.</figcaption>
+                  </figure>
+            </div>
+        
+            <!-- Left and right arrows -->
+            <a class="prev" onclick="changeSlide(-1, 'slideshow2')">&#10094;</a>
+            <a class="next" onclick="changeSlide(1, 'slideshow2')">&#10095;</a>
+        </div>
+
+        <p>
+            Edstem, uniquely, wanted to <b>slow down</b> user efficiency
+            to unenroll, supported by the checkbox and body text emphasizing
+            that non-negligible action would have to be taken to re-enroll in the course.
+        </p>
+        <p>
+            Edstem was also thorough with keyboard interactions and selectable text, but its outputs were
+            sometimes difficult to parse because of the light colors. My notes here are below:
+        </p>
+        <div class="two-columns">
+            <div class="column">
+              <h4>Input:</h4>
+              <ul>
+                  <li>✅ Checkbox slows user down.</li>
+                  <li>✅ Clicking checkbox text toggles checkbox.</li>
+                  <li>✅ "Unenroll" disabled until checkbox toggled.</li>
+                  <li>✅ Almost all text selectable.</li>
+                  <li>✅ TAB through checkbox, "Cancel", & "Unenroll".</li>
+                  <li>✅ SPACE/ENTER = mouse click.</li> 
+                  <li>⛔ Clicking outside of dialog box does nothing.</li>  
+                  <li>⛔ ESC bug; escapes bg page; dialog remains.</li>
+                  <li>⛔ No CTRL+Z to undo.</li>
+                  <li>⛔ Mobile browser: Button broken.</li>
+              </ul>
+          </div>  
+          <div class="column">
+              <h4>Output:</h4>
+              <ul>
+                <li>✅ Buttons styled identically--both good and bad.</li>
+                <li>✅ Visible changes on active and hover.</li> 
+                <li>✅ Strongest screenreader interaction; announces focus.</li>        
+                <li>✅ Focus visibly defaults to "Cancel".</li> 
+                <li>✅ Mobile browser: iOS default popup design. Text is styled the same.</li>
+              </ul>
+          </div>
+          </div>
+
+        <h3>Summary of Research</h3>
+
+        <p>A cross-platform comparison of my notes can be found below. Overall:</p>
+            <ul>
+                <li>Edstem had the smoothest screenreader experience.</li>
+                <li>Spotify had the best combination of keyboard and mouse output functionality.</li> 
+                <li>Steam was difficult to use with a keyboard and didn't work with screenreader.</li>        
+            </ul>
+            <p>
+            Below are summary tables for user input and output.
+        </p>
+
+        <figure>
+            <img src="assets/images/input_analysis_table_3.png" style="width:120%; padding-bottom: 0px">
+
+            <figcaption><i>Input analysis table.</i></figcaption>
+          </figure>
+
+          <figure style="margin-bottom: 30px">
+            <img src="assets/images/output_analysis_table_4.png" style="width:120%; padding-bottom: 0px">
+            <figcaption><i>Output analysis table.</i></figcaption>
+          </figure>
+
+          <p>
+            Noting Steam's <b>lack of keyboard accessibility,</b> and how the other
+            applications combatted such issues, I turned to focus on reimagining Steam's popup dialog.
+        </p>
+        </section>
+        <hr>
+        <section id="process">
+            <h1>Process</h1>
+
+            <h3>State models</h3>
+            <p>
+                As part of my redesign process, I diagrammed <b>all the possible states</b>
+                of Steam's popup dialog component, both from the perspective of a <b>mouse user 
+                and of a keyboard user:</b>
+            </p>
+
+            <figure style="margin-bottom: 30px">
+                <img src="assets/images/mouse_sm_original.png" style="padding: 0px; width:100%; margin-bottom: 10px; border-color: black; border-width: 1px; border-style: solid; border-radius: 4px;">
+                <figcaption style="padding-left: 0px"><i>State model for a mouse user.</i></figcaption>
+              </figure>
+
+              <figure>
+                <img src="assets/images/keyboard_sm_original.png" style="padding: 0px; width:80%; margin-bottom: 10px; border-color: black; border-width: 1px; border-style: solid; border-radius: 4px;">
+                <figcaption style="padding-left: 80px"><i>State model for a keyboard user.</i></figcaption>
+              </figure>
+
+              <p>
+                With my redesign, I wanted to focus on the <b>lack of visible output for keyboard-induced
+                state changes;</b> if I tabbed from one button to another, I would have no idea 
+                what button I was actually focusing on.
+              </p>
+
+              <p><b>Redesign goals:</b></p>
+              <ul>
+                <li>More obvious changes when keyboard focus changes.</li>
+                <li>Set a default button focus to increase keyboard efficiency.</li>
+                <li>Make text of the remove button more visible (contrast isn't very high).</li>
+              </ul>
+
+            <p>I planned out this redesign with <b>revised state models,</b> focusing on enhancing user
+                experience for keyboard users. The changes are made visible in blue text below:
+            </p>
+
+            <figure style="margin-bottom: 30px">
+                <img src="assets/images/mouse_sm_revised.png" style="padding: 0px; width:100%; margin-bottom: 10px; border-color: black; border-width: 1px; border-style: solid; border-radius: 4px;">
+                <figcaption style="padding-left:0px"><i>Revised state model for a mouse user.</i></figcaption>
+              </figure>
+
+              <figure style="margin-bottom: 30px">
+                <img src="assets/images/keyboard_sm_revised.png" style="padding: 0px; width:80%; margin-bottom: 10px; border-color: black; border-width: 1px; border-style: solid; border-radius: 4px;">
+                <figcaption style="padding-left: 80px"><i>Revised state model for a keyboard user.</i></figcaption>
+              </figure>
+              <p>In this redesign, the <b>default focus</b> for keyboard users allows them to simply press SPACE/ENTER as soon
+                as the component loads, <b>boosting efficiency.</b> The <b>visible focus</b> also helps them to be aware of this function.</p>
+                
+            <p>This does come with a <b>learnability tradeoff</b> for mouse users, though; the visible focus is unaffected by hover, as the 
+                focus only changes with keyboard or mouse press. So, if a mouse user hovers over the non-focused button, the border
+                will still appear around the focused button, <b>potentially causing confusion.</b>
+            </p>
+
+            <h3 style="padding-top: 20px;">Putting it all together: Drafting the Component Redesign</h3>
+
+            <p>With my goals and revised diagrams in mind, I sketched two states of my 
+                redesigned component: <b>the default state and the "Remove" hover state.</b>
+            </p>
+
+            <figure style="margin-bottom: 30px">
+                <img src="assets/images/redesign_sketches_2.jpg" style="width:80%; margin-bottom: 10px; border-color: black; border-width: 1px; border-style: solid; border-radius: 4px;">
+                <figcaption style="padding-left: 80px"><i>Sketches for component redesign.</i></figcaption>
+              </figure>
+              <p></p>
+
+            <p>Alongside changes for keyboard accessibility, I noted where I could also <b>boost general visual accessibility.</b> Finally, I began prototyping.</p>
+
+        </section>
+        <hr>
+        <section id="prototype">
+            <h1>Final Prototype</h1>
+
+            <figure>
+                <img src="assets/images/redesign_default_2.png" style="width:100%; padding-bottom: 10px;">
+                <figcaption><i>Redesigned default state.</i></figcaption>
+              </figure>
+
+              <figure>
+                <img src="assets/images/redesign_hover_2.png" style="width:100%; padding-bottom: 10px; ">
+                <figcaption><i>Redesigned hover state.</i></figcaption>
+              </figure>
+    
+        </section>
+        <hr>
+        <section id="reflection">
+            <h1>Reflection</h1>
+
+            <p><b>Mouse users are often prioritized</b> in component design for web apps, 
+                which can marginalize users who rely on alternative inputs. 
+                In this redesigned, I aimed to improve keyboard accessibility without 
+                sacrificing usability for mouse users.</p>
+            <p><b>Spotify’s</b> popup dialog demonstrated <b>strong usability</b> with clear 
+                indicators for both focus and hover, along with and undo functionality, which influenced my 
+                redesign.
+            <p><b>EdStem</b> excelled in screen reader accessibility but had minor 
+                <b>issues with button styling </b>and keyboard navigation; I knew I had to maintain 
+                distinct button styling in my redesign.</p>
+            <p>My design addressed accessibility gaps by ensuring keyboard users 
+                can efficiently navigate the dialog <b>without guessing</b> which button 
+                is active. The default focus on the “Remove” button enhances 
+                efficiency while maintaining clarity.</p>
+            <p>Kat Holmes’ redefines disability, as per the WHO's interpretation in 2021, as a <b>“mismatch,”</b> or difference, between the features of someone's body and the features of
+                 the environment they live in. My redesign tackles this mismatch for users who rely on keyboard navigation by making the component’s 
+                 interactions more predictable and visible.</p>
+            <p>For <b>users with impairments,</b> inaccessible popup dialogs can create <b>barriers.</b>
+                For example, a lack of focus visibility can frustrate keyboard users, while 
+                inadequate contrast can impact users with visual impairments. My redesign improves these aspects.</p>
+            </section>
+    </div>
+</div>
+    <script src="scripts.js"></script>
+</body>
+</html>
